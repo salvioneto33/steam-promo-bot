@@ -1,11 +1,12 @@
-from modules.steam_api import buscar_promocoes
+import os
+import requests
 
-print("Buscando promoções...\n")
+WEBHOOK = os.environ["DISCORD_WEBHOOK"]
 
-jogos = buscar_promocoes()
+payload = {
+    "content": "🚀 Steam Promo BR iniciado com sucesso!"
+}
 
-for jogo in jogos:
-    print(jogo["nome"])
-    print(f'Desconto: {jogo["desconto"]}%')
-    print(f'Preço: R$ {jogo["preco_final"]:.2f}')
-    print("-" * 40)
+requests.post(WEBHOOK, json=payload, timeout=10)
+
+print("Mensagem enviada com sucesso!")
