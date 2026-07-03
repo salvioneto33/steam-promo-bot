@@ -1,12 +1,14 @@
-import os
-import requests
+from modules.steam_service import SteamService
 
-WEBHOOK = os.environ["DISCORD_WEBHOOK"]
+service = SteamService()
 
-payload = {
-    "content": "🚀 Steam Promo BR iniciado com sucesso!"
-}
+deals = service.get_deals()
 
-requests.post(WEBHOOK, json=payload, timeout=10)
+print(f"Foram encontradas {len(deals)} promoções.\n")
 
-print("Mensagem enviada com sucesso!")
+for game in deals[:10]:
+    print(
+        f"{game['title']} | "
+        f"{game['salePrice']} | "
+        f"{game['savings'][:5]}%"
+    )
