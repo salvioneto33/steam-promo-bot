@@ -1,6 +1,6 @@
 {
+    "max_games": 5,
     "min_discount": 70,
     "max_price": 100.00,
-    "min_reviews": 10000,
-    "check_interval": 60
+    "min_reviews": 10000
 }
