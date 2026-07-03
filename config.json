@@ -2,5 +2,5 @@
     "max_games": 10,
     "min_discount": 50,
     "max_price": 100,
-    "min_reviews": 10000
+    "min_reviews": 5000
 }
