@@ -1,13 +1,15 @@
-from modules.cheapshark import CheapShark
-from modules.steam_api import SteamAPI
+from modules.steam_service import SteamService
+from modules.discord_webhook import DiscordWebhook
 
-cheapshark = CheapShark()
-steam = SteamAPI()
+service = SteamService()
+discord = DiscordWebhook()
 
-deal = cheapshark.get_deals(limit=1)[0]
+games = service.get_best_deals()
 
-appid = deal["steamAppID"]
+if not games:
+    print("Nenhuma promoção encontrada com os filtros atuais.")
+else:
+    for game in games:
+        discord.send_game(game)
 
-reviews = steam.get_reviews(appid)
-
-print(reviews)
+    print(f"{len(games)} promoções enviadas com sucesso!")
