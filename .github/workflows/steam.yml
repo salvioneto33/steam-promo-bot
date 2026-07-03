@@ -3,6 +3,11 @@ name: Steam Promo BR
 on:
   workflow_dispatch:
 
+  schedule:
+    - cron: "0 12 * * *"
+    - cron: "0 18 * * *"
+    - cron: "0 0 * * *"
+
 jobs:
  test:
     runs-on: ubuntu-latest
