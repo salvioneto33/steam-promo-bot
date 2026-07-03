@@ -1,10 +1,10 @@
-from modules.steam_service import SteamService
+from modules.cheapshark import CheapShark
 from modules.steam_api import SteamAPI
 
-service = SteamService()
+cheapshark = CheapShark()
 steam = SteamAPI()
 
-deal = service.get_deals(limit=1)[0]
+deal = cheapshark.get_deals(limit=1)[0]
 
 appid = deal["steamAppID"]
 
