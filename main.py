@@ -1,15 +1,15 @@
 from modules.steam_service import SteamService
+from modules.steam_api import SteamAPI
 
 service = SteamService()
+steam = SteamAPI()
 
-deals = service.get_deals()
+deal = service.get_deals(limit=1)[0]
 
-print(f"Foram encontradas {len(deals)} promoções.\n")
+appid = deal["steamAppID"]
 
-for game in deals[:10]:
-    print(
-        f"{game['title']}\n"
-        f"Steam AppID: {game.get('steamAppID')}\n"
-        f"Preço: {game['salePrice']}\n"
-        f"Desconto: {game['savings'][:5]}%\n"
-    )
+print(f"Buscando AppID {appid}...")
+
+app = steam.get_app(appid)
+
+print(app)
