@@ -1,6 +1,7 @@
 from modules.cheapshark import CheapShark
 from modules.steam_api import SteamAPI
 from modules.config import Config
+from modules.scorer import Scorer
 
 
 class SteamService:
@@ -9,13 +10,13 @@ class SteamService:
         self.cheapshark = CheapShark()
         self.steam = SteamAPI()
         self.config = Config()
+        self.scorer = Scorer()
 
     def get_best_deals(self):
 
         games = []
 
-        # Busca mais jogos do que vamos enviar, pois muitos serão filtrados
-        deals = self.cheapshark.get_deals(limit=50)
+        deals = self.cheapshark.get_deals(limit=200)
 
         for deal in deals:
 
@@ -25,6 +26,7 @@ class SteamService:
                 continue
 
             try:
+
                 app = self.steam.get_app(appid)
 
                 if not app.get("success"):
@@ -42,8 +44,6 @@ class SteamService:
 
                 price = prices[str(appid)]["data"]["price_overview"]
 
-                # ---------- FILTROS ----------
-
                 if price["discount_percent"] < self.config.min_discount:
                     continue
 
@@ -59,7 +59,11 @@ class SteamService:
                 if total_reviews < self.config.min_reviews:
                     continue
 
-                # -----------------------------
+                score = self.scorer.calculate(
+                    discount=price["discount_percent"],
+                    price=price_brl,
+                    reviews=total_reviews
+                )
 
                 games.append({
                     "name": data["name"],
@@ -68,13 +72,13 @@ class SteamService:
                     "price": price["final_formatted"],
                     "discount": price["discount_percent"],
                     "reviews": total_reviews,
+                    "score": score,
                     "url": f"https://store.steampowered.com/app/{appid}/"
                 })
-
-                if len(games) >= self.config.max_games:
-                    break
 
             except Exception:
                 continue
 
-        return games
+        games.sort(key=lambda x: x["score"], reverse=True)
+
+        return games[:self.config.max_games]
