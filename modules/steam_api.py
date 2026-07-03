@@ -38,4 +38,24 @@ class SteamAPI:
 
         response.raise_for_status()
 
+        
+
+        return response.json()
+
+    def get_reviews(self, appid):
+        url = f"https://store.steampowered.com/appreviews/{appid}"
+
+        response = requests.get(
+            url,
+            params={
+                "json": 1,
+                "language": "all",
+                "purchase_type": "all",
+                "num_per_page": 0
+            },
+            timeout=20
+        )
+
+        response.raise_for_status()
+
         return response.json()
