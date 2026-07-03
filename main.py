@@ -1,12 +1,13 @@
 from modules.steam_service import SteamService
-from modules.discord_webhook import DiscordWebhook
+from modules.steam_api import SteamAPI
 
 service = SteamService()
-discord = DiscordWebhook()
+steam = SteamAPI()
 
-games = service.get_best_deals(limit=5)
+deal = service.get_deals(limit=1)[0]
 
-for game in games:
-    discord.send_game(game)
+appid = deal["steamAppID"]
 
-print(f"{len(games)} promoções enviadas com sucesso!")
+reviews = steam.get_reviews(appid)
+
+print(reviews)
