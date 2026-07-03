@@ -14,11 +14,17 @@ class DiscordWebhook:
                 {
                     "title": game["name"],
                     "url": game["url"],
-                    "description": f"🔥 **{game['discount']}% OFF**\n💰 **US$ {game['price']}**",
+                    "description":
+                        f"~~{game['old_price']}~~\n\n"
+                        f"## 💰 {game['price']}\n\n"
+                        f"🔥 **{game['discount']}% OFF**",
                     "image": {
                         "url": game["image"]
                     },
-                    "color": 3066993
+                    "color": 5763719,
+                    "footer": {
+                        "text": "Steam Promo BR 🇧🇷"
+                    }
                 }
             ]
         }
