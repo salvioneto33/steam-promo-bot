@@ -8,7 +8,8 @@ print(f"Foram encontradas {len(deals)} promoções.\n")
 
 for game in deals[:10]:
     print(
-        f"{game['title']} | "
-        f"{game['salePrice']} | "
-        f"{game['savings'][:5]}%"
+        f"{game['title']}\n"
+        f"Steam AppID: {game.get('steamAppID')}\n"
+        f"Preço: {game['salePrice']}\n"
+        f"Desconto: {game['savings'][:5]}%\n"
     )
