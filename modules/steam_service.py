@@ -2,6 +2,7 @@ from modules.cheapshark import CheapShark
 from modules.steam_api import SteamAPI
 from modules.config import Config
 from modules.scorer import Scorer
+from modules.history import History
 
 
 class SteamService:
@@ -11,6 +12,7 @@ class SteamService:
         self.steam = SteamAPI()
         self.config = Config()
         self.scorer = Scorer()
+        self.history = History()
 
     def get_best_deals(self):
 
@@ -23,6 +25,10 @@ class SteamService:
             appid = deal.get("steamAppID")
 
             if not appid:
+                continue
+
+            # Ignora jogos já enviados anteriormente
+            if self.history.exists(appid):
                 continue
 
             try:
@@ -66,6 +72,7 @@ class SteamService:
                 )
 
                 games.append({
+                    "appid": appid,
                     "name": data["name"],
                     "image": data["header_image"],
                     "old_price": price["initial_formatted"],
@@ -81,4 +88,10 @@ class SteamService:
 
         games.sort(key=lambda x: x["score"], reverse=True)
 
-        return games[:self.config.max_games]
+        selected = games[:self.config.max_games]
+
+        # Salva no histórico os jogos enviados
+        for game in selected:
+            self.history.add(game["appid"])
+
+        return selected
