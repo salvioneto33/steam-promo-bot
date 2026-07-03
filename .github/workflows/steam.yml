@@ -4,8 +4,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+ test:
     runs-on: ubuntu-latest
+
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
     steps:
       - name: Checkout do repositório
